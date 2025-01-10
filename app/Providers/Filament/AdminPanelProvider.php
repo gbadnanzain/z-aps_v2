@@ -2,6 +2,8 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Widgets\SoTakeIdListWidget;
+use App\Filament\Admin\Widgets\SO_On_ProgressWidget;
 use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
@@ -39,8 +41,10 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
             ->widgets([
-                Widgets\AccountWidget::class,
+                //Widgets\AccountWidget::class,
                 //Widgets\FilamentInfoWidget::class,
+                SoTakeIdListWidget::class,
+                SO_On_ProgressWidget::class,
             ])
             ->middleware([
                 EncryptCookies::class,
