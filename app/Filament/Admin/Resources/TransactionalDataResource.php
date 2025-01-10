@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace App\Filament\Admin\Resources;
+
 
 use Filament\Forms;
 use Filament\Tables;
@@ -30,8 +31,8 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use App\Filament\Admin\Resources\TransactionalDataResource\Pages;
 
-use App\Filament\Resources\TransactionalDataResource\Pages;
 use App\Filament\Resources\TransactionalDataResource\RelationManagers;
 
 
@@ -429,6 +430,14 @@ class TransactionalDataResource extends Resource
                     ->modalSubheading('Are you sure you want to replicate this record?'),
             ]);
     }
+
+    public static function getRelations(): array
+    {
+        return [
+            //
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
