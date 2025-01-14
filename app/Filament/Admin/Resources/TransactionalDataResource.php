@@ -255,6 +255,7 @@ class TransactionalDataResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('SO_Date')
                     ->label('SO Date')
+                    ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('Y-M-d'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('SO_DebtorID')
                     ->sortable()
