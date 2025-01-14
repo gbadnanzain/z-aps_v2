@@ -34,7 +34,7 @@ use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Admin\Resources\TransactionalDataResource\Pages;
 
 use App\Filament\Resources\TransactionalDataResource\RelationManagers;
-
+use Filament\Tables\Columns\TextColumn;
 
 class TransactionalDataResource extends Resource
 {
@@ -94,6 +94,92 @@ class TransactionalDataResource extends Resource
                                     ->label('Cust. PO No')
                                     ->columnSpan(2)
                                     ->extraAttributes(['class' => 'w-auto']),
+
+
+                                TextInput::make('SO_Item_Description')
+
+                                    ->label('Description')
+                                    ->columnSpan(2),
+                                TextInput::make('SO_LiftNo')
+
+                                    ->label('Lift No')
+                                    ->columnSpan(1),
+                                TextInput::make('SO_Qty')
+                                    //->inlineEditable()
+                                    ->label('Qty')->columnSpan(1),
+                                TextInput::make('SO_UOM')
+                                    ->label('UOM')
+                                    //->formatStateUsing(fn(string $state): string => strtoupper($state))
+
+                                    ->columnSpan(1),
+                                TextInput::make('SO_OIR_SentTo_Finance')
+                                    ->label('OIR Sent to Fin.')->columnSpan(2),
+                                TextInput::make('SO_RQ_No')
+                                    ->label('RQ No.')->columnSpan(1),
+
+                                TextInput::make('PCH_PO_to_TELC_MS')
+                                    ->label('PO to TELC MS')
+                                    ->columnSpan(1),
+                                DatePicker::make('PCH_ETA')
+                                    ->label('ETA')
+                                    ->columnSpan(1),
+                                DatePicker::make('PCH_PO_ReceiveDate')
+                                    ->label('PO Receive Date')
+                                    ->columnSpan(1),
+                                TextInput::make('PCH_Transfered_Qty')
+                                    ->label('Transf. Qty')
+                                    ->columnSpan(1),
+                                TextInput::make('PCH_Doc')
+                                    ->label('Purchase Document')
+                                    ->columnSpan(1),
+                                DatePicker::make('PCH_Date')
+                                    ->label('Purchase Date')
+                                    ->columnSpan(1),
+                                DatePicker::make('PCH_Inform_Finance_on')
+                                    ->label('Inform Finance on')
+                                    ->columnSpan(1),
+                                TextInput::make('PCH_Remark')
+                                    ->label('Purchase Remark')->columnSpan(1),
+
+                                TextInput::make('MTC_RQ_No')
+                                    ->label('MTC Req. No.'),
+                                DatePicker::make('MTC_RQ_Date')
+                                    ->label('MTC Req. Date'),
+                                TextInput::make('MTC_Job_Done')
+                                    ->label('Job Done'),
+                                DatePicker::make('MTC_Target_Completion')
+                                    ->label('Target Compl. Date'),
+                                TextInput::make('MTC_SBK')
+                                    ->label('SBK'),
+                                TextInput::make('MTC_JO')
+                                    ->label('Job Order'),
+                                TextInput::make('MTC_DN_DO')
+                                    ->label('DN / DO'),
+                                TextInput::make('MTC_BA')
+                                    ->label('BA'),
+                                TextInput::make('MTC_Other')
+                                    ->label('Other MTC Info'),
+                                TextInput::make('MTC_Remarks')
+                                    ->label('MTC Remarks'),
+                                TextInput::make('ACTG_Unit_Price')
+                                    ->label('Unit Price'),
+                                TextInput::make('ACTG_Currency')
+                                    ->label('Currency'),
+                                TextInput::make('ACTG_Currency_Rate')
+                                    ->label('Currency Rate'),
+                                TextInput::make('ACTG_Local_Net_Total')
+                                    ->label('Local Net Total'),
+                                TextInput::make('ACTG_Invoicing')
+                                    ->label('Invoicing'),
+                                DatePicker::make('ACTG_Inv_Date')
+                                    ->label('Invoice Date'),
+                                DatePicker::make('ACTG_Payment_Receipt')
+                                    ->label('Payment Receipt Date'),
+                                DatePicker::make('ACTG_Payment_Rcpt_Date')
+                                    ->label('Payment Receipt Date'),
+                                TextInput::make('ACTG_Remarks')
+                                    ->label('Accounting Remarks'), // Tambahkan field yang relevan untuk Accounting
+
                                 Forms\Components\Select::make('SO_Status')
                                     ->label('Status')
 
@@ -126,7 +212,7 @@ class TransactionalDataResource extends Resource
                                     })
 
                                     ->extraAttributes(['class' => 'w-auto']),
-                                    TextInput::make('updated_by')
+                                TextInput::make('updated_by')
                                     ->label('Updated by')->columnSpan(2)
                                     ->disabled(),
                                 TextInput::make('updated_at')
@@ -134,106 +220,24 @@ class TransactionalDataResource extends Resource
                                     ->disabled(),
                             ]),
 
-                        Tab::make('Sales Order Detail')
+
+
+
+
+
+
+                        /*  Tab::make('Purchases')
                             ->schema([
-                                TextInput::make('SO_Item_Description')
 
-                                    ->label('Description')
-                                    ->columnSpan(2),
-                                TextInput::make('SO_LiftNo')
-
-                                    ->label('Lift No')
-                                    ->columnSpan(1),
-                                TextInput::make('SO_Qty')
-
-                                    ->label('Qty')->columnSpan(1),
-                                TextInput::make('SO_UOM')
-                                    ->label('UOM')
-                                    ->formatStateUsing(fn(string $state): string => strtoupper($state))
-
-                                    ->columnSpan(1),
-                                TextInput::make('SO_OIR_SentTo_Finance')
-                                    ->label('OIR Sent to Fin.')->columnSpan(2),
-                                TextInput::make('SO_RQ_No')
-                                    ->label('RQ No.')->columnSpan(1),
-
-                            ]),
-
-
-
-
-
-
-                        Tab::make('Purchases')
+                            ]), */
+                        /* Tab::make('Maintenance')
                             ->schema([
-                                TextInput::make('PCH_PO_to_TELC_MS')
-                                    ->label('PO to TELC MS')
-                                    ->columnSpan(1),
-                                DatePicker::make('PCH_ETA')
-                                    ->label('ETA')
-                                    ->columnSpan(1),
-                                DatePicker::make('PCH_PO_ReceiveDate')
-                                    ->label('PO Receive Date')
-                                    ->columnSpan(1),
-                                TextInput::make('PCH_Transfered_Qty')
-                                    ->label('Transf. Qty')
-                                    ->columnSpan(1),
-                                TextInput::make('PCH_Doc')
-                                    ->label('Purchase Document')
-                                    ->columnSpan(1),
-                                DatePicker::make('PCH_Date')
-                                    ->label('Purchase Date')
-                                    ->columnSpan(1),
-                                DatePicker::make('PCH_Inform_Finance_on')
-                                    ->label('Inform Finance on')
-                                    ->columnSpan(1),
-                                TextInput::make('PCH_Remark')
-                                    ->label('Purchase Remark')->columnSpan(1),
-                            ]),
-                        Tab::make('Maintenance')
+
+                            ]), */
+                        /*  Tab::make('Accounting')
                             ->schema([
-                                TextInput::make('MTC_RQ_No')
-                                    ->label('MTC Req. No.'),
-                                DatePicker::make('MTC_RQ_Date')
-                                    ->label('MTC Req. Date'),
-                                TextInput::make('MTC_Job_Done')
-                                    ->label('Job Done'),
-                                DatePicker::make('MTC_Target_Completion')
-                                    ->label('Target Compl. Date'),
-                                TextInput::make('MTC_SBK')
-                                    ->label('SBK'),
-                                TextInput::make('MTC_JO')
-                                    ->label('Job Order'),
-                                TextInput::make('MTC_DN_DO')
-                                    ->label('DN / DO'),
-                                TextInput::make('MTC_BA')
-                                    ->label('BA'),
-                                TextInput::make('MTC_Other')
-                                    ->label('Other MTC Info'),
-                                TextInput::make('MTC_Remarks')
-                                    ->label('MTC Remarks'),
-                            ]),
-                        Tab::make('Accounting')
-                            ->schema([
-                                TextInput::make('ACTG_Unit_Price')
-                                    ->label('Unit Price'),
-                                TextInput::make('ACTG_Currency')
-                                    ->label('Currency'),
-                                TextInput::make('ACTG_Currency_Rate')
-                                    ->label('Currency Rate'),
-                                TextInput::make('ACTG_Local_Net_Total')
-                                    ->label('Local Net Total'),
-                                TextInput::make('ACTG_Invoicing')
-                                    ->label('Invoicing'),
-                                DatePicker::make('ACTG_Inv_Date')
-                                    ->label('Invoice Date'),
-                                DatePicker::make('ACTG_Payment_Receipt')
-                                    ->label('Payment Receipt Date'),
-                                DatePicker::make('ACTG_Payment_Rcpt_Date')
-                                    ->label('Payment Receipt Date'),
-                                TextInput::make('ACTG_Remarks')
-                                    ->label('Accounting Remarks'), // Tambahkan field yang relevan untuk Accounting
-                            ]),
+
+                            ]), */
                     ])
 
             ]);
@@ -276,14 +280,14 @@ class TransactionalDataResource extends Resource
                 Tables\Columns\TextColumn::make('SO_CustPONo')
                     ->label('PO No.')
                     ->formatStateUsing(fn(string $state): string => strtoupper($state)),
-                /* Tables\Columns\TextColumn::make('SO_Item_Description')
+                Tables\Columns\TextColumn::make('SO_Item_Description')
                     ->label('Description'),
                 Tables\Columns\TextColumn::make('SO_LiftNo')
                     ->label('Lift No.'),
                 Tables\Columns\TextColumn::make('SO_Qty')
                     ->label('Quantity'),
                 Tables\Columns\TextColumn::make('SO_UOM')
-                    ->label('UOM'),*/
+                    ->label('UOM'),
                 Tables\Columns\TextColumn::make('SO_OIR_SentTo_Finance')
                     ->label('OIR Sent Finance'),
                 Tables\Columns\TextColumn::make('SO_RQ_No')
@@ -291,6 +295,72 @@ class TransactionalDataResource extends Resource
                     ->formatStateUsing(fn(string $state): string => strtoupper($state)),
                 Tables\Columns\TextColumn::make('SO_Remark')
                     ->label('Remark'),
+
+
+                Tables\Columns\TextColumn::make('PCH_PO_to_TELC_MS')
+                    ->label('PO to TELC MS')
+                    ->columnSpan(1),
+                    Tables\Columns\TextColumn::make('PCH_ETA')
+                    ->label('ETA')
+                    ->columnSpan(1),
+                    Tables\Columns\TextColumn::make('PCH_PO_ReceiveDate')
+                    ->label('PO Receive Date')
+                    ->columnSpan(1),
+                Tables\Columns\TextColumn::make('PCH_Transfered_Qty')
+                    ->label('Transf. Qty')
+                    ->columnSpan(1),
+                Tables\Columns\TextColumn::make('PCH_Doc')
+                    ->label('Purchase Document')
+                    ->columnSpan(1),
+                    Tables\Columns\TextColumn::make('PCH_Date')
+                    ->label('Purchase Date')
+                    ->columnSpan(1),
+                    Tables\Columns\TextColumn::make('PCH_Inform_Finance_on')
+                    ->label('Inform Finance on')
+                    ->columnSpan(1),
+                Tables\Columns\TextColumn::make('PCH_Remark')
+                    ->label('Purchase Remark')->columnSpan(1),
+
+                Tables\Columns\TextColumn::make('MTC_RQ_No')
+                    ->label('MTC Req. No.'),
+                    Tables\Columns\TextColumn::make('MTC_RQ_Date')
+                    ->label('MTC Req. Date'),
+                Tables\Columns\TextColumn::make('MTC_Job_Done')
+                    ->label('Job Done'),
+                Tables\Columns\TextColumn::make('MTC_Target_Completion')
+                    ->label('Target Compl. Date'),
+                Tables\Columns\TextColumn::make('MTC_SBK')
+                    ->label('SBK'),
+                Tables\Columns\TextColumn::make('MTC_JO')
+                    ->label('Job Order'),
+                Tables\Columns\TextColumn::make('MTC_DN_DO')
+                    ->label('DN / DO'),
+                Tables\Columns\TextColumn::make('MTC_BA')
+                    ->label('BA'),
+                Tables\Columns\TextColumn::make('MTC_Other')
+                    ->label('Other MTC Info'),
+                Tables\Columns\TextColumn::make('MTC_Remarks')
+                    ->label('MTC Remarks'),
+                Tables\Columns\TextColumn::make('ACTG_Unit_Price')
+                    ->label('Unit Price'),
+                Tables\Columns\TextColumn::make('ACTG_Currency')
+                    ->label('Currency'),
+                Tables\Columns\TextColumn::make('ACTG_Currency_Rate')
+                    ->label('Currency Rate'),
+                Tables\Columns\TextColumn::make('ACTG_Local_Net_Total')
+                    ->label('Local Net Total'),
+                Tables\Columns\TextColumn::make('ACTG_Invoicing')
+                    ->label('Invoicing'),
+                    Tables\Columns\TextColumn::make('ACTG_Inv_Date')
+                    ->label('Invoice Date'),
+                    Tables\Columns\TextColumn::make('ACTG_Payment_Receipt')
+                    ->label('Payment Receipt Date'),
+                    Tables\Columns\TextColumn::make('ACTG_Payment_Rcpt_Date')
+                    ->label('Payment Receipt Date'),
+                Tables\Columns\TextColumn::make('ACTG_Remarks')
+                    ->label('Accounting Remarks'),
+
+
 
                 Tables\Columns\TextColumn::make('SO_Status')
                     ->label('Status')
@@ -395,6 +465,43 @@ class TransactionalDataResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                /* Action::make('edit')
+                    ->label('Edit Grid')
+                    ->icon('heroicon-o-document') // Menggunakan ikon grid
+                    ->tooltip('Edit this record')
+                    ->color('success')
+                    ->action(fn($record) => $this->editRecord($record))
+                    ->modalHeading('Edit Record')
+                    ->modalWidth('lg')
+                    ->form([
+                        TextInput::make('SO_Item_Description')
+                            ->label('Description')
+                            ->required(),
+
+                        TextInput::make('SO_LiftNo')
+                            ->label('Lift No')
+                            ->required(),
+
+                        TextInput::make('SO_Qty')
+                            ->label('Qty')
+                            ->numeric()
+                            ->required(),
+
+                        TextInput::make('SO_UOM')
+                            ->label('UOM')
+                            ->required(),
+
+                        TextInput::make('SO_OIR_SentTo_Finance')
+                            ->label('OIR Sent to Fin.')
+                            ->required(),
+
+                        TextInput::make('SO_RQ_No')
+                            ->label('RQ No.')
+                            ->required(),
+                    ])
+                    ->requiresConfirmation(), */
+
+
                 Action::make('replicate')
                     ->label('Replicate')
                     ->color('warning')
@@ -429,6 +536,9 @@ class TransactionalDataResource extends Resource
                     ->requiresConfirmation()
                     ->modalHeading('Replicate Record')
                     ->modalSubheading('Are you sure you want to replicate this record?'),
+
+
+
             ]);
     }
 
