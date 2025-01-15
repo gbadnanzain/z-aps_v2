@@ -35,7 +35,7 @@ use App\Filament\Admin\Resources\TransactionalDataResource\Pages;
 
 use App\Filament\Resources\TransactionalDataResource\RelationManagers;
 use Filament\Tables\Columns\TextColumn;
-
+use Filament\Tables\Columns\EditableTextColumn;
 class TransactionalDataResource extends Resource
 {
     protected static ?string $model = TransactionalData::class;
@@ -45,202 +45,184 @@ class TransactionalDataResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\Tabs::make('MainTabs')
-                    ->tabs([
-                        Tab::make('Sales Orders (SO)')
-                            ->schema([
-                                Forms\Components\TextInput::make('ID')
-                                    ->columnSpan(1)
-                                    ->label('ID')
-
-                                    ->disabled()
-                                    ->unique(ignoreRecord: true),
-                                Forms\Components\TextInput::make('SO_No')
-                                    ->label('SO No.')
-                                    ->required()
-                                    //->unique(ignoreRecord: true)
-                                    ->columnSpan(2)
-                                    ->extraAttributes(['style' => 'width: 100%;']),
-                                Forms\Components\DatePicker::make('SO_Date')
-                                    ->label('SO Date')
-                                    ->required()
-                                    ->placeholder('Select a date')
-                                    ->displayFormat('Y-m-d')
-                                    ->columnSpan(2)
-                                    ->extraAttributes(['class' => 'w-auto']),
-                                Forms\Components\TextInput::make('SO_DebtorID')
-                                    ->label('Debt. ID')
-                                    ->required()
-                                    ->columnSpan(2)
-                                    ->extraAttributes(['class' => 'w-auto']),
-                                Forms\Components\DatePicker::make('SO_Target_CompletionDatePerPO')
-                                    ->label('Target Compl./PO')
-                                    ->required()
-                                    ->placeholder('Select a date')
-                                    ->displayFormat('Y-m-d')
-                                    ->columnSpan(2)
-                                    ->extraAttributes(['class' => 'w-auto']),
-                                Forms\Components\TextInput::make('SO_DebtorName')
-                                    ->label('Debtor Name')
-                                    ->required()
-                                    ->columnSpan(2)
-                                    ->extraAttributes(['class' => 'w-auto']),
-                                Forms\Components\TextInput::make('SO_Agent')
-                                    ->label('Agent')
-                                    ->required()
-                                    ->extraAttributes(['class' => 'w-auto']),
-                                Forms\Components\TextInput::make('SO_CustPONo')
-                                    ->label('Cust. PO No')
-                                    ->columnSpan(2)
-                                    ->extraAttributes(['class' => 'w-auto']),
-
-
-                                TextInput::make('SO_Item_Description')
-
-                                    ->label('Description')
-                                    ->columnSpan(2),
-                                TextInput::make('SO_LiftNo')
-
-                                    ->label('Lift No')
-                                    ->columnSpan(1),
-                                TextInput::make('SO_Qty')
-                                    //->inlineEditable()
-                                    ->label('Qty')->columnSpan(1),
-                                TextInput::make('SO_UOM')
-                                    ->label('UOM')
-                                    //->formatStateUsing(fn(string $state): string => strtoupper($state))
-
-                                    ->columnSpan(1),
-                                TextInput::make('SO_OIR_SentTo_Finance')
-                                    ->label('OIR Sent to Fin.')->columnSpan(2),
-                                TextInput::make('SO_RQ_No')
-                                    ->label('RQ No.')->columnSpan(1),
-
-                                TextInput::make('PCH_PO_to_TELC_MS')
-                                    ->label('PO to TELC MS')
-                                    ->columnSpan(1),
-                                DatePicker::make('PCH_ETA')
-                                    ->label('ETA')
-                                    ->columnSpan(1),
-                                DatePicker::make('PCH_PO_ReceiveDate')
-                                    ->label('PO Receive Date')
-                                    ->columnSpan(1),
-                                TextInput::make('PCH_Transfered_Qty')
-                                    ->label('Transf. Qty')
-                                    ->columnSpan(1),
-                                TextInput::make('PCH_Doc')
-                                    ->label('Purchase Document')
-                                    ->columnSpan(1),
-                                DatePicker::make('PCH_Date')
-                                    ->label('Purchase Date')
-                                    ->columnSpan(1),
-                                DatePicker::make('PCH_Inform_Finance_on')
-                                    ->label('Inform Finance on')
-                                    ->columnSpan(1),
-                                TextInput::make('PCH_Remark')
-                                    ->label('Purchase Remark')->columnSpan(1),
-
-                                TextInput::make('MTC_RQ_No')
-                                    ->label('MTC Req. No.'),
-                                DatePicker::make('MTC_RQ_Date')
-                                    ->label('MTC Req. Date'),
-                                TextInput::make('MTC_Job_Done')
-                                    ->label('Job Done'),
-                                DatePicker::make('MTC_Target_Completion')
-                                    ->label('Target Compl. Date'),
-                                TextInput::make('MTC_SBK')
-                                    ->label('SBK'),
-                                TextInput::make('MTC_JO')
-                                    ->label('Job Order'),
-                                TextInput::make('MTC_DN_DO')
-                                    ->label('DN / DO'),
-                                TextInput::make('MTC_BA')
-                                    ->label('BA'),
-                                TextInput::make('MTC_Other')
-                                    ->label('Other MTC Info'),
-                                TextInput::make('MTC_Remarks')
-                                    ->label('MTC Remarks'),
-                                TextInput::make('ACTG_Unit_Price')
-                                    ->label('Unit Price'),
-                                TextInput::make('ACTG_Currency')
-                                    ->label('Currency'),
-                                TextInput::make('ACTG_Currency_Rate')
-                                    ->label('Currency Rate'),
-                                TextInput::make('ACTG_Local_Net_Total')
-                                    ->label('Local Net Total'),
-                                TextInput::make('ACTG_Invoicing')
-                                    ->label('Invoicing'),
-                                DatePicker::make('ACTG_Inv_Date')
-                                    ->label('Invoice Date'),
-                                DatePicker::make('ACTG_Payment_Receipt')
-                                    ->label('Payment Receipt Date'),
-                                DatePicker::make('ACTG_Payment_Rcpt_Date')
-                                    ->label('Payment Receipt Date'),
-                                TextInput::make('ACTG_Remarks')
-                                    ->label('Accounting Remarks'), // Tambahkan field yang relevan untuk Accounting
-
-                                Forms\Components\Select::make('SO_Status')
-                                    ->label('Status')
-
-                                    ->required()
-                                    ->columnSpan(2)
-                                    ->options([
-                                        'SENT' => 'ALL SENT',
-                                        'CANCELED' => 'CANCELED',
-                                        'COMPLETED' => 'COMPLETED',
-                                        'DELIVERED PARTIAL' => 'DELIVERED PARTIAL',
-                                        'INVOICED' => 'INVOICED',
-                                        'ITEM INCOMPLETE' => 'ITEM INCOMPLETE',
-                                        'OUTSTANDING' => 'OUTSTANDING',
-                                        'PAYMENT' => 'PAYMENT',
-                                        'TAKE ID' => 'TAKE ID',
-                                        'W/OFF' => 'W/OFF',
-                                    ])
-                                    ->getOptionLabelUsing(fn($value) => match ($value) {
-                                        'SENT' => '<span class="text-green-600 font-bold">ALL SENT</span>',
-                                        'CANCELED' => '<span class="text-red-600 font-bold">CANCELED</span>',
-                                        'COMPLETED' => '<span class="text-green-600 font-bold">COMPLETED</span>',
-                                        'DELIVERED PARTIAL' => '<span class="text-yellow-600 font-bold">DELIVERED PARTIAL</span>',
-                                        'INVOICED' => '<span class="text-blue-600 font-bold">INVOICED</span>',
-                                        'ITEM INCOMPLETE' => '<span class="text-red-600 font-bold">ITEM INCOMPLETE</span>',
-                                        'OUTSTANDING' => '<span class="text-yellow-600 font-bold">OUTSTANDING</span>',
-                                        'PAYMENT' => '<span class="text-blue-600 font-bold">PAYMENT</span>',
-                                        'TAKE ID' => '<span class="text-gray-600 font-bold">TAKE ID</span>',
-                                        'W/OFF' => '<span class="text-gray-500 font-bold">W/OFF</span>',
-                                        default => '<span class="text-gray-500">UNKNOWN</span>',
-                                    })
-
-                                    ->extraAttributes(['class' => 'w-auto']),
-                                TextInput::make('updated_by')
-                                    ->label('Updated by')->columnSpan(2)
-                                    ->disabled(),
-                                TextInput::make('updated_at')
-                                    ->label('Updated at')->columnSpan(1)
-                                    ->disabled(),
-                            ]),
-
-
-
-
-
-
-
-                        /*  Tab::make('Purchases')
-                            ->schema([
-
-                            ]), */
-                        /* Tab::make('Maintenance')
-                            ->schema([
-
-                            ]), */
-                        /*  Tab::make('Accounting')
-                            ->schema([
-
-                            ]), */
-                    ])
-
-            ]);
+        ->schema([
+            Forms\Components\Grid::make(300) // Mengatur jumlah kolom dalam grid
+                ->schema([
+                    Forms\Components\TextInput::make('ID')
+                        ->label('ID')
+                        ->disabled()
+                        ->unique(ignoreRecord: true)
+                        ->columnSpan(6),
+                    Forms\Components\TextInput::make('SO_No')
+                        ->label('SO No.')
+                        ->required()
+                        ->columnSpan(6),
+                        //->extraAttributes(['style' => 'width: 100%;']),
+                    Forms\Components\DatePicker::make('SO_Date')
+                        ->label('SO Date')
+                        ->required()
+                        ->placeholder('Select a date')
+                        ->displayFormat('Y-m-d')
+                        ->columnSpan(4),
+                    Forms\Components\TextInput::make('SO_DebtorID')
+                        ->label('Debt. ID')
+                        ->required()
+                        ->columnSpan(4),
+                    Forms\Components\DatePicker::make('SO_Target_CompletionDatePerPO')
+                        ->label('Target Compl./PO')
+                        ->required()
+                        ->placeholder('Select a date')
+                        ->displayFormat('Y-m-d')
+                        ->columnSpan(8),
+                    Forms\Components\TextInput::make('SO_DebtorName')
+                        ->label('Debtor Name')
+                        ->required()
+                        ->columnSpan(6),
+                    Forms\Components\TextInput::make('SO_Agent')
+                        ->label('Agent')
+                        ->required()
+                        ->columnSpan(5),
+                    Forms\Components\TextInput::make('SO_CustPONo')
+                        ->label('Cust. PO No')
+                        ->columnSpan(10),
+                    TextInput::make('SO_Item_Description')
+                        ->label('Description')
+                        ->columnSpan(15),
+                    TextInput::make('SO_LiftNo')
+                        ->label('Lift No')
+                        ->columnSpan(5),
+                    TextInput::make('SO_Qty')
+                        ->label('Qty')
+                        ->columnSpan(5),
+                    TextInput::make('SO_UOM')
+                        ->label('UOM')
+                        ->columnSpan(5),
+                    TextInput::make('SO_OIR_SentTo_Finance')
+                        ->label('OIR Sent to Fin.')
+                        ->columnSpan(6),
+                    TextInput::make('SO_RQ_No')
+                        ->label('RQ No.')
+                        ->columnSpan(4),
+                    TextInput::make('PCH_PO_to_TELC_MS')
+                        ->label('PO to TELC MS')
+                        ->columnSpan(6),
+                    DatePicker::make('PCH_ETA')
+                        ->label('ETA')
+                        ->columnSpan(7),
+                    DatePicker::make('PCH_PO_ReceiveDate')
+                        ->label('PO Receive Date')
+                        ->columnSpan(7),
+                    TextInput::make('PCH_Transfered_Qty')
+                        ->label('Transf. Qty')
+                        ->columnSpan(8),
+                    TextInput::make('PCH_Doc')
+                        ->label('Purchase Doc.')
+                        ->columnSpan(6),
+                    DatePicker::make('PCH_Date')
+                        ->label('Purchase Date')
+                        ->columnSpan(7),
+                    DatePicker::make('PCH_Inform_Finance_on')
+                        ->label('Inform Fin. on')
+                        ->columnSpan(7),
+                    TextInput::make('PCH_Remark')
+                        ->label('Purchase Remark')
+                        ->columnSpan(8),
+                    TextInput::make('MTC_RQ_No')
+                        ->label('MTC Req. No.')
+                        ->columnSpan(6),
+                    DatePicker::make('MTC_RQ_Date')
+                        ->label('MTC Req. Date')
+                        ->columnSpan(7),
+                    TextInput::make('MTC_Job_Done')
+                        ->label('Job Done')
+                        ->columnSpan(8),
+                    DatePicker::make('MTC_Target_Completion')
+                        ->label('Target Compl. Date')
+                        ->columnSpan(8),
+                    TextInput::make('MTC_SBK')
+                        ->label('SBK')
+                        ->columnSpan(5),
+                    TextInput::make('MTC_JO')
+                        ->label('Job Order')
+                        ->columnSpan(5)
+                        ,
+                    TextInput::make('MTC_DN_DO')
+                        ->label('DN / DO')
+                        ->columnSpan(5),
+                    TextInput::make('MTC_BA')
+                        ->label('BA')
+                        ->columnSpan(5),
+                    TextInput::make('MTC_Other')
+                        ->label('Other MTC Info')
+                        ->columnSpan(8),
+                    TextInput::make('MTC_Remarks')
+                        ->label('MTC Remarks')
+                        ->columnSpan(8),
+                    TextInput::make('ACTG_Unit_Price')
+                        ->label('Unit Price')
+                        ->columnSpan(5),
+                    TextInput::make('ACTG_Currency')
+                        ->label('Currency')
+                        ->columnSpan(5),
+                    TextInput::make('ACTG_Currency_Rate')
+                        ->label('Currency Rate')
+                        ->columnSpan(7),
+                    TextInput::make('ACTG_Local_Net_Total')
+                        ->label('Local Net Total')
+                        ->columnSpan(8),
+                    TextInput::make('ACTG_Invoicing')
+                        ->label('Invoicing')
+                        ->columnSpan(8),
+                    DatePicker::make('ACTG_Inv_Date')
+                        ->label('Invoice Date')
+                        ->columnSpan(5),
+                    DatePicker::make('ACTG_Payment_Receipt')
+                        ->label('Payment Recv.')
+                        ->columnSpan(8),
+                    DatePicker::make('ACTG_Payment_Rcpt_Date')
+                        ->label('Payment Rec. Date')
+                        ->columnSpan(8),
+                    TextInput::make('ACTG_Remarks')
+                        ->label('Accounting Remarks')
+                        ->columnSpan(9),
+                    Forms\Components\Select::make('SO_Status')
+                        ->label('Status')
+                        ->required()
+                        ->options([
+                            'SENT' => 'ALL SENT',
+                            'CANCELED' => 'CANCELED',
+                            'COMPLETED' => 'COMPLETED',
+                            'DELIVERED PARTIAL' => 'DELIVERED PARTIAL',
+                            'INVOICED' => 'INVOICED',
+                            'ITEM INCOMPLETE' => 'ITEM INCOMPLETE',
+                            'OUTSTANDING' => 'OUTSTANDING',
+                            'PAYMENT' => 'PAYMENT',
+                            'TAKE ID' => 'TAKE ID',
+                            'W/OFF' => 'W/OFF',
+                        ])
+                        ->getOptionLabelUsing(fn($value) => match ($value) {
+                            'SENT' => '<span class="text-green-600 font-bold">ALL SENT</span>',
+                            'CANCELED' => '<span class="text-red-600 font-bold">CANCELED</span>',
+                            'COMPLETED' => '<span class="text-green-600 font-bold">COMPLETED</span>',
+                            'DELIVERED PARTIAL' => '<span class="text-yellow-600 font-bold">DELIVERED PARTIAL</span>',
+                            'INVOICED' => '<span class="text-blue-600 font-bold">INVOICED</span>',
+                            'ITEM INCOMPLETE' => '<span class="text-red-600 font-bold">ITEM INCOMPLETE</span>',
+                            'OUTSTANDING' => '<span class="text-yellow-600 font-bold">OUTSTANDING</span>',
+                            'PAYMENT' => '<span class="text-blue-600 font-bold">PAYMENT</span>',
+                            'TAKE ID' => '<span class="text-gray-600 font-bold">TAKE ID</span>',
+                            'W/OFF' => '<span class="text-gray-500 font-bold">W/OFF</span>',
+                            default => '<span class="text-gray-500">UNKNOWN</span>',
+                        })
+                        ->columnSpan(10),
+                    TextInput::make('updated_by')
+                        ->label('Updated by')
+                        ->disabled()
+                        ->columnSpan(6),
+                    TextInput::make('updated_at')
+                        ->label('Updated at')
+                        ->disabled()->columnSpan(6),
+                ]),
+        ]);
     }
 
     public static function table(Table $table): Table
@@ -281,7 +263,8 @@ class TransactionalDataResource extends Resource
                     ->label('PO No.')
                     ->formatStateUsing(fn(string $state): string => strtoupper($state)),
                 Tables\Columns\TextColumn::make('SO_Item_Description')
-                    ->label('Description'),
+                    ->label('Description')
+                     ,
                 Tables\Columns\TextColumn::make('SO_LiftNo')
                     ->label('Lift No.'),
                 Tables\Columns\TextColumn::make('SO_Qty')
