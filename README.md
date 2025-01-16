@@ -11,3 +11,10 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 
 # Tony Xhepa, 8 Create and Use the User Policy | Laravel Filament Roles and Permissions 
 php artisan make:policy UserPolicy --model=User
+
+
+implementasi  powergrid 
+CLASS: app/Livewire/TransactionTable.php
+VIEW:  resources/views/livewire/transaction-table.blade.php
+
+belum jalan
