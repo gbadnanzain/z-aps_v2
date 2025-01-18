@@ -31,6 +31,7 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TabsFilter;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\DatePicker;
+use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
 use Filament\Tables\Columns\TextInputColumn;
@@ -237,6 +238,11 @@ class TransactionalDataResource extends Resource
                     ->searchable()
                     ->label('ID')
                     ->disabled(),
+                TextInputColumn::make('SO_ID')
+                    ->label('SO ID')
+                    ->placeholder('Generated from SO_No')
+                    ->default(fn($record) => substr($record->SO_No, 0, 4) . '/' . substr($record->SO_No, -4))
+                    ->disabled(),
                 TextInputColumn::make('SO_No')
                     ->sortable()
                     ->searchable()
@@ -269,9 +275,10 @@ class TransactionalDataResource extends Resource
                     ->default(''),
 
                 TextInputColumn::make('SO_Agent')
+                    //->weight(FontWeight::Bold)
                     ->sortable()
                     ->searchable()
-                    ->label('Agent')
+                    ->label('Agent ')
                     ->placeholder('Enter Agent')
                     ->default(''),
 
@@ -318,22 +325,30 @@ class TransactionalDataResource extends Resource
                     ->default(''),
 
                 TextInputColumn::make('SO_RQ_No')
-                    ->label('Request No.')
-                //->formatStateUsing(fn(string $state): string => strtoupper($state))
-                ,
-                TextInputColumn::make('SO_Status)
-                    ->label('Status')
-                    ->placeholder('SO Status')
-                    ->default(''),
+                    ->label('Request No.'),
+
+                SelectColumn::make('SO_Status')
+                    ->label('SO Status')
+                    ->options([
+                        'SENT' => 'Sent',
+                        'CANCELED' => 'Canceled',
+                        'COMPLETED' => 'Completed',
+                        'DELIVERED PARTIAL' => 'Delivered Partial',
+                        'INVOICED' => 'Invoiced',
+                        'ITEM INCOMPLETE' => 'Item Incomplete',
+                        'OUTSTANDING' => 'Outstanding',
+                        'PAYMENT' => 'Payment',
+                        'TAKE ID' => 'Take ID',
+                        'W/OFF' => 'Write Off',
+                    ])
+                    ->searchable()
+                    ->sortable(),
 
                 TextInputColumn::make('PCH_PO_to_TELC_MS')
-                    ->label('PO to TELC MS')
-                    ->columnSpan(1),
-                TextInputColumn::make('PCH_ETA')
-                    //->format('y-m-d')
-                    ->label('ETA')
+                    ->label('PO to TELC MS'),
 
-                    ->columnSpan(1),
+                TextInputColumn::make('PCH_ETA')
+                    ->label('ETA'),
                 TextInputColumn::make('PCH_PO_ReceiveDate')
                     //->format('y-m-d')
                     ->label('PO Receive Date')
