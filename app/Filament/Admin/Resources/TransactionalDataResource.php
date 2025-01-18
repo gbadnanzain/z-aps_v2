@@ -39,7 +39,7 @@ use Filament\Tables\Columns\EditableTextColumn;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Admin\Resources\TransactionalDataResource\Pages;
 use App\Filament\Resources\TransactionalDataResource\RelationManagers;
-
+use Filament\Tables\Columns\DateTimeColumn;
 class TransactionalDataResource extends Resource
 {
     protected static ?string $model = TransactionalData::class;
@@ -255,10 +255,17 @@ class TransactionalDataResource extends Resource
 
                     ->sortable()
                     ->searchable()
-                    //->format('y-m-d')
+
                     ->label('Sales Order Date')
                     ->placeholder('Enter SO Date'),
 
+
+                /* DateTimeColumn::make('SO_Date')
+                    ->label('SO Date')
+                    ->format('d/m/Y') // Format tanggal seperti "DD/MM/YYYY"
+                    ->sortable()
+                    ->searchable(),
+ */
                 TextInputColumn::make('SO_DebtorID')
                     ->sortable()
                     ->searchable()
