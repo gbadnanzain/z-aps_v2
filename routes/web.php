@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+//use App\Http\Controllers\Admin\RoleController;
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -9,6 +10,9 @@ Route::get('/', function () {
     return redirect('/admin');
 });
 
+/* Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::get('/admin/shield/roles', [RoleController::class, 'index'])->name('shield.roles');
+}); */
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -98,3 +98,12 @@
         </div>
     </div>
 </nav>
+<div class="text-center bg-gradient-to-r from-gray-200 via-gray-100 to-gray-200 dark:from-gray-800 dark:via-gray-900 dark:to-gray-800 py-6 shadow-inner">
+    <p class="text-base font-medium text-gray-700 dark:text-gray-300">
+        Build and managed by
+        <a href="https://zain.web.id" target="_blank"
+           class="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-200 font-semibold transition duration-200 ease-in-out">
+            zain.web.id
+        </a>
+    </p>
+</div>
