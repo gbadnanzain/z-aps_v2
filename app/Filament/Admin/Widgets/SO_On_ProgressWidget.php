@@ -18,7 +18,7 @@ class SO_On_ProgressWidget extends BaseWidget
         // Query data dari tabel Sales Orders
         return \App\Models\TransactionalData::query()
             ->whereNotNull('SO_Status')
-            ->whereNotIn('SO_Status', ['COMPLETED', 'CANCELED']);
+            ->whereNotIn('SO_Status', ['COMPLETED', 'CANCELED','W/OFF']);
     }
 
     protected function getTableColumns(): array
@@ -30,7 +30,7 @@ class SO_On_ProgressWidget extends BaseWidget
                 ->searchable(),
             TextColumn::make('SO_Date')
                 ->label('SO Date')
-                ->date()
+                ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->format('Y-M-d'))
                 ->sortable(),
             TextColumn::make('SO_DebtorName')
                 ->label('Debtor Name')
