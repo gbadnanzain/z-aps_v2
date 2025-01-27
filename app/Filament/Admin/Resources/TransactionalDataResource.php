@@ -257,7 +257,8 @@ class TransactionalDataResource extends Resource
                     ->searchable()
 
                     ->label('Sales Order Date')
-                    ->placeholder('Enter SO Date'),
+                    ->placeholder('Enter SO Date')
+                    ->getStateUsing(fn ($record) => \Carbon\Carbon::parse($record->SO_Date)->format('Y-m-d')),
 
 
                 /* DateTimeColumn::make('SO_Date')
@@ -357,7 +358,7 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('PCH_ETA')
                     ->label('ETA'),
                 TextInputColumn::make('PCH_PO_ReceiveDate')
-                    //->format('y-m-d')
+                ->getStateUsing(fn ($record) => \Carbon\Carbon::parse($record->PCH_ETA)->format('Y-m-d'))
                     ->label('PO Receive Date')
 
                     ->columnSpan(1),
@@ -368,7 +369,7 @@ class TransactionalDataResource extends Resource
                     ->label('Purchase Document')
                     ->columnSpan(1),
                 TextInputColumn::make('PCH_Date')
-                    //->format('y-m-d')
+                ->getStateUsing(fn ($record) => \Carbon\Carbon::parse($record->PCH_Date)->format('Y-m-d'))
                     ->label('Purchase Date')
 
                     ->columnSpan(1),
@@ -381,12 +382,12 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('MTC_RQ_No')
                     ->label('MTC Req. No.'),
                 TextInputColumn::make('MTC_RQ_Date')
-                    //->format('y-m-d')
+                ->getStateUsing(fn ($record) => \Carbon\Carbon::parse($record->MTC_RQ_Date)->format('Y-m-d'))
                     ->label('MTC Req. Date'),
                 TextInputColumn::make('MTC_Job_Done')
                     ->label('Job Done'),
                 TextInputColumn::make('MTC_Target_Completion')
-                    //->format('y-m-d')
+                ->getStateUsing(fn ($record) => \Carbon\Carbon::parse($record->MTC_Target_Completion)->format('Y-m-d'))
                     ->label('Target Compl. Date'),
                 TextInputColumn::make('MTC_SBK')
                     ->label('SBK'),
@@ -411,13 +412,13 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('ACTG_Invoicing')
                     ->label('Invoicing'),
                 TextInputColumn::make('ACTG_Inv_Date')
-                    //->format('y-m-d')
+                ->getStateUsing(fn ($record) => \Carbon\Carbon::parse($record->ACTG_Inv_Date)->format('Y-m-d'))
                     ->label('Invoice Date'),
                 TextInputColumn::make('ACTG_Payment_Receipt')
 
                     ->label('Payment Receipt Date'),
                 TextInputColumn::make('ACTG_Payment_Rcpt_Date')
-                    //->format('y-m-d')
+                ->getStateUsing(fn ($record) => \Carbon\Carbon::parse($record->ACTG_Payment_Rcpt_Date)->format('Y-m-d'))
                     ->label('Payment Receipt Date'),
                 TextInputColumn::make('ACTG_Remarks')
                     ->label('Accounting Remarks'),

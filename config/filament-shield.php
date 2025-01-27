@@ -12,7 +12,21 @@ return [
         'is_scoped_to_tenant' => true,
         'cluster' => null,
     ],
-
+    'permissions' => [
+        'admin' => [
+            'access_dashboard' => true,
+            'view_users' => true,
+            'view_transactions' => true,
+            // Add more permissions here as needed
+        ],
+        'super-admin' => [
+            'access_dashboard' => true,
+            'view_users' => true,
+            'view_transactions' => true,
+            // Add more permissions here as needed
+        ],
+        // other roles' permissions...
+    ],
     'tenant_model' => null,
 
     'auth_provider_model' => [
