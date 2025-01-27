@@ -245,7 +245,7 @@ class TransactionalDataResource extends Resource
                     ->label('SO ID')
                     ->placeholder('Generated from SO_No')
                     ->default(fn($record) => substr($record->SO_No, 0, 4) . '/' . substr($record->SO_No, -4))
-                    ->searchable()
+
                     ->disabled(),
                 TextInputColumn::make('SO_No')
                     ->sortable()
