@@ -24,6 +24,7 @@ class TransactionalData extends Model
     // Specify the fields that are mass assignable
     protected $fillable = [
         'SO_No',
+        'SO_ID',
         'SO_Date',
         'SO_DebtorID',
         'SO_Target_CompletionDatePerPO',

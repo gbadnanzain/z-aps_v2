@@ -62,6 +62,10 @@ class TransactionalDataResource extends Resource
                             ->label('SO No.')
                             ->required()
                             ->columnSpan(6),
+                        Forms\Components\TextInput::make('SO_ID')
+                            ->label('SO ID')
+                            ->required()
+                            ->columnSpan(6),
                         //->extraAttributes(['style' => 'width: 100%;']),
                         Forms\Components\DatePicker::make('SO_Date')
                             ->label('SO Date')
@@ -239,14 +243,13 @@ class TransactionalDataResource extends Resource
                     ->searchable()
 
                     ->disabled()
-                    ->label('ID')
-                    ,
+                    ->label('ID'),
                 TextInputColumn::make('SO_ID')
                     ->label('SO ID')
                     ->placeholder('Generated from SO_No')
                     ->default(fn($record) => substr($record->SO_No, 0, 4) . '/' . substr($record->SO_No, -4))
-
-                    ->disabled(),
+                    ->searchable()
+                    ,
                 TextInputColumn::make('SO_No')
                     ->sortable()
                     ->searchable()
