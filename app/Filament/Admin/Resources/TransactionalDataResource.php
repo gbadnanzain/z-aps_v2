@@ -253,6 +253,7 @@ class TransactionalDataResource extends Resource
                     ->label('SO ID')
                     ->placeholder('Generated from SO_No')
                     ->default(fn($record) => substr($record->SO_No, 0, 4) . '/' . substr($record->SO_No, -4))
+                    ->sortable()
                     ->searchable(),
                 TextInputColumn::make('SO_No')
                     ->sortable()
@@ -344,7 +345,9 @@ class TransactionalDataResource extends Resource
                     ->default(''),
 
                 TextInputColumn::make('SO_RQ_No')
-                    ->label('Request No.'),
+                    ->label('Request No.')
+                    ->sortable()
+                    ->searchable(),
                 TextInputColumn::make('SO_Status')
                     ->label('SO Status')
                     ->sortable()
@@ -370,7 +373,9 @@ class TransactionalDataResource extends Resource
                     ->label('PO to TELC MS'),
 
                 TextInputColumn::make('PCH_ETA')
-                    ->label('ETA'),
+                    ->label('ETA')
+                    ->sortable()
+                    ->searchable(),
                 TextInputColumn::make('PCH_PO_ReceiveDate')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->PCH_ETA)->format('Y-m-d'))
                     ->label('PO Receive Date')
@@ -391,7 +396,9 @@ class TransactionalDataResource extends Resource
                     ->label('Inform Finance on')
                     ->columnSpan(1),
                 TextInputColumn::make('PCH_Remark')
-                    ->label('Purchase Remark')->columnSpan(1),
+                    ->label('Purchase Remark')->columnSpan(1)
+                    ->sortable()
+                    ->searchable(),
 
                 TextInputColumn::make('MTC_RQ_No')
                     ->label('MTC Req. No.'),
@@ -399,22 +406,30 @@ class TransactionalDataResource extends Resource
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->MTC_RQ_Date)->format('Y-m-d'))
                     ->label('MTC Req. Date'),
                 TextInputColumn::make('MTC_Job_Done')
-                    ->label('Job Done'),
+                    ->label('Job Done')
+                    ->sortable()
+                    ->searchable(),
                 TextInputColumn::make('MTC_Target_Completion')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->MTC_Target_Completion)->format('Y-m-d'))
                     ->label('Target Compl. Date'),
                 TextInputColumn::make('MTC_SBK')
-                    ->label('SBK'),
+                    ->label('SBK')
+                    ->sortable()
+                    ->searchable(),
                 TextInputColumn::make('MTC_JO')
                     ->label('Job Order'),
                 TextInputColumn::make('MTC_DN_DO')
                     ->label('DN / DO'),
                 TextInputColumn::make('MTC_BA')
-                    ->label('BA'),
+                    ->label('BA')
+                    ->sortable()
+                    ->searchable(),
                 TextInputColumn::make('MTC_Other')
                     ->label('Other MTC Info'),
                 TextInputColumn::make('MTC_Remarks')
-                    ->label('MTC Remarks'),
+                    ->label('MTC Remarks')
+                    ->sortable()
+                    ->searchable(),
                 TextInputColumn::make('ACTG_Unit_Price')
                     ->label('Unit Price'),
                 TextInputColumn::make('ACTG_Currency')
@@ -435,7 +450,9 @@ class TransactionalDataResource extends Resource
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->ACTG_Payment_Rcpt_Date)->format('Y-m-d'))
                     ->label('Payment Receipt Date'),
                 TextInputColumn::make('ACTG_Remarks')
-                    ->label('Accounting Remarks'),
+                    ->label('Accounting Remarks')
+                    ->sortable()
+                    ->searchable(),
 
 
 
@@ -450,7 +467,7 @@ class TransactionalDataResource extends Resource
                     ->form([
                         Forms\Components\DatePicker::make('from')
                             ->label('From')
-                            ->default(Carbon::now()->startOfMonth()),  // Default: awal bulan ini
+                            ->default(Carbon::now()->subYear()->startOfYear()),  // Default: awal bulan ini
 
                         Forms\Components\DatePicker::make('to')
                             ->label('To')
@@ -488,6 +505,7 @@ class TransactionalDataResource extends Resource
                             $query->where('SO_Status', 'like', '%' . $data['SO_Status'] . '%');
                         }
                     }),
+
                 // Filter berdasarkan status SO
                 /* SelectFilter::make('so_status')
                     ->label('SO Status')
