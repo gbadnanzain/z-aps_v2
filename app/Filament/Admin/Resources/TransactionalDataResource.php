@@ -66,13 +66,11 @@ class TransactionalDataResource extends Resource
                             ->afterStateUpdated(function (callable $set, $state) {
                                 // Set nilai SO_ID berdasarkan perubahan di SO_No
                                 $set('SO_ID', substr($state, 0, 4) . '/' . substr($state, -4));
-                            })
-                            ,
+                            }),
                         Forms\Components\TextInput::make('SO_ID')
                             ->label('SO ID')
                             ->required()
-                            ->columnSpan(6)
-                            ,
+                            ->columnSpan(6),
                         //->extraAttributes(['style' => 'width: 100%;']),
                         Forms\Components\DatePicker::make('SO_Date')
                             ->label('SO Date')
@@ -347,8 +345,11 @@ class TransactionalDataResource extends Resource
 
                 TextInputColumn::make('SO_RQ_No')
                     ->label('Request No.'),
-
-                SelectColumn::make('SO_Status')
+                TextInputColumn::make('SO_Status')
+                    ->label('SO Status')
+                    ->sortable()
+                    ->searchable()
+                /* SelectColumn::make('SO_Status')
                     ->label('SO Status')
                     ->options([
                         'SENT' => 'Sent',
@@ -363,7 +364,7 @@ class TransactionalDataResource extends Resource
                         'W/OFF' => 'Write Off',
                     ])
                     ->searchable()
-                    ->sortable(),
+                    ->sortable() */,
 
                 TextInputColumn::make('PCH_PO_to_TELC_MS')
                     ->label('PO to TELC MS'),
@@ -476,7 +477,17 @@ class TransactionalDataResource extends Resource
                             $query->where('SO_No', 'like', '%' . $data['so_no'] . '%');
                         }
                     }),
-
+                Filter::make('SO_Status')
+                    ->form([
+                        Forms\Components\TextInput::make('SO_Status')
+                            ->label('SO Status')
+                            ->placeholder('Enter Status')
+                    ])
+                    ->query(function ($query, $data) {
+                        if (isset($data['SO_Status'])) {
+                            $query->where('SO_Status', 'like', '%' . $data['SO_Status'] . '%');
+                        }
+                    }),
                 // Filter berdasarkan status SO
                 /* SelectFilter::make('so_status')
                     ->label('SO Status')
