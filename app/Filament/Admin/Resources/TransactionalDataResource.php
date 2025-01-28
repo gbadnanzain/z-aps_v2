@@ -246,27 +246,29 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('ID')
                     ->sortable()
                     ->searchable()
-
+                    ->toggleable()
                     ->disabled()
                     ->label('ID'),
                 TextInputColumn::make('SO_ID')
                     ->label('SO ID')
+                    ->toggleable()
                     ->placeholder('Generated from SO_No')
                     ->default(fn($record) => substr($record->SO_No, 0, 4) . '/' . substr($record->SO_No, -4))
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(isIndividual: true),
                 TextInputColumn::make('SO_No')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('Sales Order No')
                     ->placeholder('Enter SO No')
-                    ->default(''),
+                    ->default('')
+                    ->toggleable(),
 
                 TextInputColumn::make('SO_Date')
 
 
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
 
                     ->label('Sales Order Date')
                     ->placeholder('Enter SO Date')
@@ -281,7 +283,7 @@ class TransactionalDataResource extends Resource
  */
                 TextInputColumn::make('SO_DebtorID')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('Debtor ID')
                     ->placeholder('Enter Debtor ID')
                     ->default(''),
@@ -289,7 +291,7 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('SO_DebtorName')
                     //->weight(FontWeight::Bold)
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('Debtor Name')
                     ->placeholder('Enter Debtor Name')
                     ->default(''),
@@ -297,49 +299,49 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('SO_Agent')
                     //->weight(FontWeight::Bold)
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('Agent ')
                     ->placeholder('Enter Agent')
                     ->default(''),
 
                 TextInputColumn::make('SO_CustPONo')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('Customer PO No')
                     ->placeholder('Enter Customer PO No')
                     ->default(''),
 
                 TextInputColumn::make('SO_Item_Description')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('Item Description')
                     ->placeholder('Enter Item Description')
                     ->default(''),
 
                 TextInputColumn::make('SO_LiftNo')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('Lift No')
                     ->placeholder('Enter Lift No')
                     ->default(''),
 
                 TextInputColumn::make('SO_Qty')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('Quantity')
                     ->placeholder('Enter Quantity')
                     ->default(''),
 
                 TextInputColumn::make('SO_UOM')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('UOM')
                     ->placeholder('Enter UOM')
                     ->default(''),
 
                 TextInputColumn::make('SO_OIR_SentTo_Finance')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
                     ->label('OIR Sent to Finance')
                     ->placeholder('Enter OIR Sent to Finance')
                     ->default(''),
@@ -347,11 +349,15 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('SO_RQ_No')
                     ->label('Request No.')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(isIndividual: true),
                 TextInputColumn::make('SO_Status')
                     ->label('SO Status')
                     ->sortable()
-                    ->searchable()
+                    ->searchable(isIndividual: true)
+
+
+
+
                 /* SelectColumn::make('SO_Status')
                     ->label('SO Status')
                     ->options([
@@ -375,7 +381,7 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('PCH_ETA')
                     ->label('ETA')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(isIndividual: true),
                 TextInputColumn::make('PCH_PO_ReceiveDate')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->PCH_ETA)->format('Y-m-d'))
                     ->label('PO Receive Date')
@@ -398,68 +404,88 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('PCH_Remark')
                     ->label('Purchase Remark')->columnSpan(1)
                     ->sortable()
-                    ->searchable(),
+                    ->searchable(isIndividual: true)
+                    ->toggleable(),
 
                 TextInputColumn::make('MTC_RQ_No')
-                    ->label('MTC Req. No.'),
+                    ->label('MTC Req. No.')
+                    ->toggleable(),
                 TextInputColumn::make('MTC_RQ_Date')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->MTC_RQ_Date)->format('Y-m-d'))
-                    ->label('MTC Req. Date'),
+                    ->label('MTC Req. Date')
+                    ->toggleable(),
                 TextInputColumn::make('MTC_Job_Done')
                     ->label('Job Done')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextInputColumn::make('MTC_Target_Completion')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->MTC_Target_Completion)->format('Y-m-d'))
-                    ->label('Target Compl. Date'),
+                    ->label('Target Compl. Date')
+                    ->toggleable(),
                 TextInputColumn::make('MTC_SBK')
                     ->label('SBK')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextInputColumn::make('MTC_JO')
-                    ->label('Job Order'),
+                    ->label('Job Order')
+                    ->toggleable(),
                 TextInputColumn::make('MTC_DN_DO')
-                    ->label('DN / DO'),
+                    ->label('DN / DO')
+                    ->toggleable(),
                 TextInputColumn::make('MTC_BA')
                     ->label('BA')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextInputColumn::make('MTC_Other')
-                    ->label('Other MTC Info'),
+                    ->label('Other MTC Info')
+                    ->toggleable(),
                 TextInputColumn::make('MTC_Remarks')
                     ->label('MTC Remarks')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Unit_Price')
-                    ->label('Unit Price'),
+                    ->label('Unit Price')
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Currency')
-                    ->label('Currency'),
+                    ->label('Currency')
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Currency_Rate')
-                    ->label('Currency Rate'),
+                    ->label('Currency Rate')
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Local_Net_Total')
-                    ->label('Local Net Total'),
+                    ->label('Local Net Total')
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Invoicing')
-                    ->label('Invoicing'),
+                    ->label('Invoicing')
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Inv_Date')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->ACTG_Inv_Date)->format('Y-m-d'))
-                    ->label('Invoice Date'),
+                    ->label('Invoice Date')
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Payment_Receipt')
 
-                    ->label('Payment Receipt Date'),
+                    ->label('Payment Receipt Date')
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Payment_Rcpt_Date')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->ACTG_Payment_Rcpt_Date)->format('Y-m-d'))
-                    ->label('Payment Receipt Date'),
+                    ->label('Payment Receipt Date')
+                    ->toggleable(),
                 TextInputColumn::make('ACTG_Remarks')
                     ->label('Accounting Remarks')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->toggleable(),
 
 
 
 
                 // Kolom lain ditambahkan di sini...
             ])
-
+            ->searchOnBlur()
             ->filters([
                 // Filter berdasarkan rentang tanggal (current month & year)
                 // Filter berdasarkan rentang tanggal (current month & year)
@@ -606,7 +632,23 @@ class TransactionalDataResource extends Resource
 
             ]);
     }
+   /*  protected function getStatusColor($status)
+    {
+        $statuses = [
+            'SENT' => '<span class="text-green-600 font-bold">ALL SENT</span>',
+            'CANCELED' => '<span class="text-red-600 font-bold">CANCELED</span>',
+            'COMPLETED' => '<span class="text-green-600 font-bold">COMPLETED</span>',
+            'DELIVERED PARTIAL' => '<span class="text-yellow-600 font-bold">DELIVERED PARTIAL</span>',
+            'INVOICED' => '<span class="text-blue-600 font-bold">INVOICED</span>',
+            'ITEM INCOMPLETE' => '<span class="text-red-600 font-bold">ITEM INCOMPLETE</span>',
+            'OUTSTANDING' => '<span class="text-yellow-600 font-bold">OUTSTANDING</span>',
+            'PAYMENT' => '<span class="text-blue-600 font-bold">PAYMENT</span>',
+            'TAKE ID' => '<span class="text-gray-600 font-bold">TAKE ID</span>',
+            'W/OFF' => '<span class="text-gray-500 font-bold">W/OFF</span>',
+        ];
 
+        return $statuses[$status] ?? $status;
+    } */
     public static function getRelations(): array
     {
         return [
