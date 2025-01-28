@@ -61,11 +61,18 @@ class TransactionalDataResource extends Resource
                         Forms\Components\TextInput::make('SO_No')
                             ->label('SO No.')
                             ->required()
-                            ->columnSpan(6),
+                            ->columnSpan(6)
+                            ->reactive() // Menjadikan input ini reaktif
+                            ->afterStateUpdated(function (callable $set, $state) {
+                                // Set nilai SO_ID berdasarkan perubahan di SO_No
+                                $set('SO_ID', substr($state, 0, 4) . '/' . substr($state, -4));
+                            })
+                            ,
                         Forms\Components\TextInput::make('SO_ID')
                             ->label('SO ID')
                             ->required()
-                            ->columnSpan(6),
+                            ->columnSpan(6)
+                            ,
                         //->extraAttributes(['style' => 'width: 100%;']),
                         Forms\Components\DatePicker::make('SO_Date')
                             ->label('SO Date')
@@ -248,8 +255,7 @@ class TransactionalDataResource extends Resource
                     ->label('SO ID')
                     ->placeholder('Generated from SO_No')
                     ->default(fn($record) => substr($record->SO_No, 0, 4) . '/' . substr($record->SO_No, -4))
-                    ->searchable()
-                    ,
+                    ->searchable(),
                 TextInputColumn::make('SO_No')
                     ->sortable()
                     ->searchable()
