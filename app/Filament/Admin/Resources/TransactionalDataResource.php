@@ -7,14 +7,15 @@ use Filament\Forms;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use Forms\Components\Badge;
 use Illuminate\Support\Carbon;
 use Tables\Filters\TextFilter;
 use Filament\Resources\Resource;
 use Tables\Filters\SearchFilter;
 use App\Models\TransactionalData;
+
+
 use Illuminate\Support\Facades\DB;
-
-
 use Filament\Forms\Components\Tabs;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Filters\Filter;
@@ -24,8 +25,8 @@ use Filament\Actions\ReplicateAction;
 use Filament\Forms\Components\Select;
 use function Laravel\Prompts\warning;
 use Filament\Support\Enums\FontWeight;
-use Filament\Forms\Components\Tabs\Tab;
 //use Filament\Forms\Components\Actions\Action;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Tables\Columns\DateColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TabsFilter;
@@ -34,13 +35,13 @@ use Filament\Forms\Components\DatePicker;
 use Filament\Tables\Columns\SelectColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Tables\Columns\DateTimeColumn;
 use Filament\Tables\Columns\TextInputColumn;
 use Filament\Tables\Columns\EditableTextColumn;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Admin\Resources\TransactionalDataResource\Pages;
 use App\Filament\Resources\TransactionalDataResource\RelationManagers;
-use Filament\Tables\Columns\DateTimeColumn;
-
+use Filament\Tables\Columns\BadgeColumn;
 class TransactionalDataResource extends Resource
 {
     protected static ?string $model = TransactionalData::class;
@@ -62,15 +63,19 @@ class TransactionalDataResource extends Resource
                             ->label('SO No.')
                             ->required()
                             ->columnSpan(6)
-                            ->reactive() // Menjadikan input ini reaktif
+                            ->reactive()
+
                             ->afterStateUpdated(function (callable $set, $state) {
                                 // Set nilai SO_ID berdasarkan perubahan di SO_No
-                                $set('SO_ID', substr($state, 0, 4) . '/' . substr($state, -4));
+                                $set('SO_ID', substr($state, 0, 4) . '/' . substr($state, -3));
                             }),
+
                         Forms\Components\TextInput::make('SO_ID')
                             ->label('SO ID')
                             ->required()
-                            ->columnSpan(6),
+                            ->columnSpan(6)
+
+                            ,
                         //->extraAttributes(['style' => 'width: 100%;']),
                         Forms\Components\DatePicker::make('SO_Date')
                             ->label('SO Date')
@@ -253,7 +258,7 @@ class TransactionalDataResource extends Resource
                     ->label('SO ID')
                     ->toggleable()
                     ->placeholder('Generated from SO_No')
-                    ->default(fn($record) => substr($record->SO_No, 0, 4) . '/' . substr($record->SO_No, -4))
+                    //->default(fn($record) => substr($record->SO_No, 0, 4) . '/' . substr($record->SO_No, -4))
                     ->sortable()
                     ->searchable(isIndividual: true),
                 TextInputColumn::make('SO_No')
@@ -283,7 +288,7 @@ class TransactionalDataResource extends Resource
  */
                 TextInputColumn::make('SO_DebtorID')
                     ->sortable()
-                    ->searchable(isIndividual: true)
+                    //->searchable(isIndividual: true)
                     ->label('Debtor ID')
                     ->placeholder('Enter Debtor ID')
                     ->default(''),
@@ -291,7 +296,7 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('SO_DebtorName')
                     //->weight(FontWeight::Bold)
                     ->sortable()
-                    ->searchable(isIndividual: true)
+                    //->searchable(isIndividual: true)
                     ->label('Debtor Name')
                     ->placeholder('Enter Debtor Name')
                     ->default(''),
@@ -299,7 +304,7 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('SO_Agent')
                     //->weight(FontWeight::Bold)
                     ->sortable()
-                    ->searchable(isIndividual: true)
+                    //->searchable(isIndividual: true)
                     ->label('Agent ')
                     ->placeholder('Enter Agent')
                     ->default(''),
@@ -350,16 +355,10 @@ class TransactionalDataResource extends Resource
                     ->label('Request No.')
                     ->sortable()
                     ->searchable(isIndividual: true),
-                TextInputColumn::make('SO_Status')
+
+                Tables\Columns\SelectColumn::make('SO_Status')
                     ->label('SO Status')
-                    ->sortable()
-                    ->searchable(isIndividual: true)
 
-
-
-
-                /* SelectColumn::make('SO_Status')
-                    ->label('SO Status')
                     ->options([
                         'SENT' => 'Sent',
                         'CANCELED' => 'Canceled',
@@ -370,10 +369,11 @@ class TransactionalDataResource extends Resource
                         'OUTSTANDING' => 'Outstanding',
                         'PAYMENT' => 'Payment',
                         'TAKE ID' => 'Take ID',
-                        'W/OFF' => 'Write Off',
+                        'W/OFF' => 'W/OFF',
+                        '#Replicated#' => 'Replicated'
                     ])
-                    ->searchable()
-                    ->sortable() */,
+                // Menambahkan pencarian jika diperlukan
+                ,
 
                 TextInputColumn::make('PCH_PO_to_TELC_MS')
                     ->label('PO to TELC MS'),
@@ -422,6 +422,7 @@ class TransactionalDataResource extends Resource
                 TextInputColumn::make('MTC_Target_Completion')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->MTC_Target_Completion)->format('Y-m-d'))
                     ->label('Target Compl. Date')
+                    ->sortable()
                     ->toggleable(),
                 TextInputColumn::make('MTC_SBK')
                     ->label('SBK')
@@ -449,6 +450,7 @@ class TransactionalDataResource extends Resource
                     ->toggleable(),
                 TextInputColumn::make('ACTG_Unit_Price')
                     ->label('Unit Price')
+
                     ->toggleable(),
                 TextInputColumn::make('ACTG_Currency')
                     ->label('Currency')
@@ -458,6 +460,7 @@ class TransactionalDataResource extends Resource
                     ->toggleable(),
                 TextInputColumn::make('ACTG_Local_Net_Total')
                     ->label('Local Net Total')
+
                     ->toggleable(),
                 TextInputColumn::make('ACTG_Invoicing')
                     ->label('Invoicing')
@@ -485,7 +488,8 @@ class TransactionalDataResource extends Resource
 
                 // Kolom lain ditambahkan di sini...
             ])
-            ->searchOnBlur()
+            ->defaultSort('SO_date', 'desc')
+
             ->filters([
                 // Filter berdasarkan rentang tanggal (current month & year)
                 // Filter berdasarkan rentang tanggal (current month & year)
@@ -508,50 +512,64 @@ class TransactionalDataResource extends Resource
                         }
                     }),
 
-                // Filter berdasarkan nomor SO
-                Filter::make('so_no')
-                    ->form([
-                        Forms\Components\TextInput::make('so_no')
-                            ->label('SO No')
-                            ->placeholder('Enter SO No')
-                    ])
-                    ->query(function ($query, $data) {
-                        if (isset($data['so_no'])) {
-                            $query->where('SO_No', 'like', '%' . $data['so_no'] . '%');
-                        }
-                    }),
-                Filter::make('SO_Status')
-                    ->form([
-                        Forms\Components\TextInput::make('SO_Status')
-                            ->label('SO Status')
-                            ->placeholder('Enter Status')
-                    ])
-                    ->query(function ($query, $data) {
-                        if (isset($data['SO_Status'])) {
-                            $query->where('SO_Status', 'like', '%' . $data['SO_Status'] . '%');
-                        }
-                    }),
+                    SelectFilter::make('SO_DebtorID')
+                    ->label('Debtor ID')
+                    ->options(
+                        fn() => TransactionalData::query()
+                            ->select('SO_DebtorID')
+                            ->distinct()
+                            ->orderBy('SO_DebtorID', 'asc')
+                            ->pluck('SO_DebtorID', 'SO_DebtorID')
+                            ->toArray()
+                    )
+                    ->searchable(),
 
-                // Filter berdasarkan status SO
-                /* SelectFilter::make('so_status')
+                    SelectFilter::make('SO_DebtorName')
+                    ->label('Debtor Name')
+                    ->options(
+                        fn() => TransactionalData::query()
+                            ->select('SO_DebtorName')
+                            ->distinct()
+                            ->orderBy('SO_DebtorName', 'asc')
+                            ->pluck('SO_DebtorName', 'SO_DebtorName')
+                            ->toArray()
+                    )
+                    ->searchable(),
+                    SelectFilter::make('SO_Agent')
+                    ->label('Agent')
+                    ->options(
+                        fn() => TransactionalData::query()
+                            ->select('SO_Agent')
+                            ->distinct()
+                            ->orderBy('SO_Agent', 'asc')
+                            ->pluck('SO_Agent', 'SO_Agent')
+                            ->toArray()
+                    )
+                    ->searchable(),
+
+                    SelectFilter::make('SO_Item_Description')
+                    ->label('Item Description')
+                    ->options(
+                        fn() => TransactionalData::query()
+                            ->select('SO_Item_Description')
+                            ->distinct()
+                            ->orderBy('SO_Item_Description', 'asc')
+                            ->pluck('SO_Item_Description', 'SO_Item_Description')
+                            ->toArray()
+                    )
+                    ->searchable(),
+
+                SelectFilter::make('SO_Status')
                     ->label('SO Status')
-                    ->options([
-                        'SENT' => 'Sent',
-                        'CANCELED' => 'Canceled',
-                        'COMPLETED' => 'Completed',
-                        'DELIVERED PARTIAL' => 'Delivered Partial',
-                        'INVOICED' => 'Invoiced',
-                        'ITEM INCOMPLETE' => 'Item Incomplete',
-                        'OUTSTANDING' => 'Outstanding',
-                        'PAYMENT' => 'Payment',
-                        'TAKE ID' => 'Take ID',
-                        'W/OFF' => 'Write Off',
-                    ])
-                    ->query(function ($query, $value) {
-                        if ($value) {
-                            $query->where('SO_Status', $value);
-                        }
-                    }), */
+                    ->options(
+                        fn() => TransactionalData::query()
+                            ->select('SO_Status')
+                            ->orderBy('SO_Status', 'asc')
+                            ->distinct()
+                            ->pluck('SO_Status', 'SO_Status')
+                            ->toArray()
+                    )
+                    ->searchable(),
 
             ])
             ->actions([
@@ -632,7 +650,7 @@ class TransactionalDataResource extends Resource
 
             ]);
     }
-   /*  protected function getStatusColor($status)
+    /*  protected function getStatusColor($status)
     {
         $statuses = [
             'SENT' => '<span class="text-green-600 font-bold">ALL SENT</span>',
@@ -655,7 +673,24 @@ class TransactionalDataResource extends Resource
             //
         ];
     }
+    protected function getBadgeState($status)
+    {
+        $statusColors = [
+            'sent' => 'success',
+            'canceled' => 'danger',
+            'completed' => 'primary',
+            'delivered_partial' => 'warning',
+            'invoiced' => 'info',
+            'item_incomplete' => 'secondary',
+            'outstanding' => 'warning',
+            'payment' => 'success',
+            'take_id' => 'primary',
+            'w_off' => 'danger',
+            'replicated' => 'success',
+        ];
 
+        return $statusColors[$status] ?? 'default';
+    }
     public static function getPages(): array
     {
         return [

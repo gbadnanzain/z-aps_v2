@@ -1,6 +1,15 @@
 <?php
 
 return [
+    'panel' => [
+        'shield_resource' => [
+            'enabled' => true,  // Pastikan Shield diaktifkan
+            'group' => 'Settings',
+            'sort' => null,
+            'icon' => 'heroicon-o-shield-check',
+            'visible' => true, // Jangan pakai Auth::user() di sini!
+        ],
+    ],
     'shield_resource' => [
         'should_register_navigation' => true,
         'slug' => 'shield/roles',
