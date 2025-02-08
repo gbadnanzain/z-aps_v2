@@ -20,7 +20,8 @@ class SO_On_ProgressWidget extends BaseWidget
             ->whereNotNull('SO_Status')
             ->whereNotIn('SO_Status', ['COMPLETED', 'CANCELED','W/OFF']);
     }
-
+     // Menjadikan widget full width
+     protected int | string | array $columnSpan = 'full';
     protected function getTableColumns(): array
     {
         return [

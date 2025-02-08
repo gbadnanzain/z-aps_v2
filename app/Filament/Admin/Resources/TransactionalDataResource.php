@@ -13,7 +13,7 @@ use Tables\Filters\TextFilter;
 use Filament\Resources\Resource;
 use Tables\Filters\SearchFilter;
 use App\Models\TransactionalData;
-
+use App\Models\User;
 
 use Illuminate\Support\Facades\DB;
 use Filament\Forms\Components\Tabs;
@@ -47,7 +47,10 @@ class TransactionalDataResource extends Resource
     protected static ?string $model = TransactionalData::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-
+    public static function getNavigationBadge(): ?string
+    {
+        return static::getModel()::count();
+    }
     public static function form(Form $form): Form
     {
         return $form
@@ -63,12 +66,12 @@ class TransactionalDataResource extends Resource
                             ->label('SO No.')
                             ->required()
                             ->columnSpan(6)
-                            ->reactive()
+                            /*->reactive()
 
-                            ->afterStateUpdated(function (callable $set, $state) {
+                             ->afterStateUpdated(function (callable $set, $state) {
                                 // Set nilai SO_ID berdasarkan perubahan di SO_No
                                 $set('SO_ID', substr($state, 0, 4) . '/' . substr($state, -3));
-                            }),
+                            }) */,
 
                         Forms\Components\TextInput::make('SO_ID')
                             ->label('SO ID')
@@ -106,6 +109,7 @@ class TransactionalDataResource extends Resource
                             ->columnSpan(10),
                         TextInput::make('SO_Item_Description')
                             ->label('Description')
+                            ->required()
                             ->columnSpan(15),
                         TextInput::make('SO_LiftNo')
                             ->label('Lift No')
@@ -235,7 +239,11 @@ class TransactionalDataResource extends Resource
                         TextInput::make('updated_by')
                             ->label('Updated by')
                             ->disabled()
-                            ->columnSpan(6),
+                            ->columnSpan(6)
+
+                            ->default(fn () => Auth::user()?->name)
+                            //->default(Auth::check() ? Auth::user()->name : 'Guest')
+                            ,
                         TextInput::make('updated_at')
                             ->label('Updated at')
                             ->disabled()->columnSpan(6),
@@ -291,7 +299,7 @@ class TransactionalDataResource extends Resource
                     //->searchable(isIndividual: true)
                     ->label('Debtor ID')
                     ->placeholder('Enter Debtor ID')
-                    ->default(''),
+                    ->default('-'),
 
                 TextInputColumn::make('SO_DebtorName')
                     //->weight(FontWeight::Bold)
@@ -299,7 +307,7 @@ class TransactionalDataResource extends Resource
                     //->searchable(isIndividual: true)
                     ->label('Debtor Name')
                     ->placeholder('Enter Debtor Name')
-                    ->default(''),
+                    ->default('-'),
 
                 TextInputColumn::make('SO_Agent')
                     //->weight(FontWeight::Bold)
@@ -307,28 +315,28 @@ class TransactionalDataResource extends Resource
                     //->searchable(isIndividual: true)
                     ->label('Agent ')
                     ->placeholder('Enter Agent')
-                    ->default(''),
+                    ->default('-'),
 
                 TextInputColumn::make('SO_CustPONo')
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Customer PO No')
                     ->placeholder('Enter Customer PO No')
-                    ->default(''),
+                    ->default('-'),
 
                 TextInputColumn::make('SO_Item_Description')
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Item Description')
                     ->placeholder('Enter Item Description')
-                    ->default(''),
+                    ->default('-'),
 
                 TextInputColumn::make('SO_LiftNo')
                     ->sortable()
                     ->searchable(isIndividual: true)
                     ->label('Lift No')
                     ->placeholder('Enter Lift No')
-                    ->default(''),
+                    ->default('-'),
 
                 TextInputColumn::make('SO_Qty')
                     ->sortable()
@@ -342,7 +350,7 @@ class TransactionalDataResource extends Resource
                     ->searchable(isIndividual: true)
                     ->label('UOM')
                     ->placeholder('Enter UOM')
-                    ->default(''),
+                    ->default('-'),
 
                 TextInputColumn::make('SO_OIR_SentTo_Finance')
                     ->sortable()
@@ -484,11 +492,20 @@ class TransactionalDataResource extends Resource
                     ->toggleable(),
 
 
+                    TextInputColumn::make('updated_by')
+                    ->label('Updated by')
+                    ->disabled()
+                    ->columnSpan(6)
+                    ->default(Auth::check() ? Auth::user()->name : 'Guest'),
+                    TextInputColumn::make('updated_at')
+                    ->label('Updated at')
+                    ->disabled()->columnSpan(6),
+
 
 
                 // Kolom lain ditambahkan di sini...
             ])
-            ->defaultSort('SO_date', 'desc')
+            ->defaultSort('SO_ID', 'desc')
 
             ->filters([
                 // Filter berdasarkan rentang tanggal (current month & year)
@@ -691,6 +708,7 @@ class TransactionalDataResource extends Resource
 
         return $statusColors[$status] ?? 'default';
     }
+
     public static function getPages(): array
     {
         return [

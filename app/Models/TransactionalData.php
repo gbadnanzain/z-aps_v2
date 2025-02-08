@@ -6,7 +6,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Permission\Traits\HasPermissions;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class TransactionalData extends Model
 {

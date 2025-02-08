@@ -33,19 +33,30 @@ class AdminPanelProvider extends PanelProvider
             ->colors([
                 'primary' => Color::Amber,
             ])
+            ->profile(isSimple:false)
             ->sidebarFullyCollapsibleOnDesktop()
             ->discoverResources(in: app_path('Filament/Admin/Resources'), for: 'App\\Filament\\Admin\\Resources')
             ->discoverPages(in: app_path('Filament/Admin/Pages'), for: 'App\\Filament\\Admin\\Pages')
             ->pages([
                 Pages\Dashboard::class,
             ])
+            /* ->userMenuItems([
+                MenuItem::make()
+                ->label('Profile')
+                ->icon('heroicon-o-user')
+                ->url('/profile'),
+            ]) */
             ->discoverWidgets(in: app_path('Filament/Admin/Widgets'), for: 'App\\Filament\\Admin\\Widgets')
+
             ->widgets([
-                //Widgets\AccountWidget::class,
+
                 //Widgets\FilamentInfoWidget::class,
                 SoTakeIdListWidget::class,
                 SO_On_ProgressWidget::class,
+                //Widgets\AccountWidget::class,
+
             ])
+
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

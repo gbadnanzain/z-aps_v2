@@ -117,7 +117,10 @@ return [
     | Supported drivers: "file", "cache"
     |
     */
+/* 'providers' => [
 
+    App\Providers\FilamentNavigationServiceProvider::class,
+], */
     'maintenance' => [
         'driver' => env('APP_MAINTENANCE_DRIVER', 'file'),
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
