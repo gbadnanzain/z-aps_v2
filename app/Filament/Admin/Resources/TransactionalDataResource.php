@@ -417,6 +417,7 @@ class TransactionalDataResource extends Resource
 
                 TextInputColumn::make('MTC_RQ_No')
                     ->label('MTC Req. No.')
+                    ->searchable(isIndividual: true)
                     ->toggleable(),
                 TextInputColumn::make('MTC_RQ_Date')
                     ->getStateUsing(fn($record) => \Carbon\Carbon::parse($record->MTC_RQ_Date)->format('Y-m-d'))
@@ -505,6 +506,8 @@ class TransactionalDataResource extends Resource
 
                 // Kolom lain ditambahkan di sini...
             ])
+            ->striped()
+            ->recordClasses(fn ($record) => 'hover:bg-yellow-100 focus:bg-yellow-200')
             ->defaultSort('SO_ID', 'desc')
 
             ->filters([
@@ -539,6 +542,7 @@ class TransactionalDataResource extends Resource
                             ->pluck('SO_DebtorID', 'SO_DebtorID')
                             ->toArray()
                     )
+                    ->multiple()
                     ->searchable(),
 
                     SelectFilter::make('SO_DebtorName')
@@ -551,6 +555,7 @@ class TransactionalDataResource extends Resource
                             ->pluck('SO_DebtorName', 'SO_DebtorName')
                             ->toArray()
                     )
+                    ->multiple()
                     ->searchable(),
                     SelectFilter::make('SO_Agent')
                     ->label('Agent')
@@ -562,6 +567,7 @@ class TransactionalDataResource extends Resource
                             ->pluck('SO_Agent', 'SO_Agent')
                             ->toArray()
                     )
+                    ->multiple()
                     ->searchable(),
 
                     SelectFilter::make('SO_Item_Description')
@@ -574,7 +580,21 @@ class TransactionalDataResource extends Resource
                             ->pluck('SO_Item_Description', 'SO_Item_Description')
                             ->toArray()
                     )
+                    ->multiple()
                     ->searchable(),
+
+
+                    /* SelectFilter::make('MTC_RQ_No')
+                    ->label('MTC_RQ_No')
+                    ->options(
+                        fn() => TransactionalData::query()
+                            ->select('MTC_RQ_No')
+                            ->distinct()
+                            ->orderBy('MTC_RQ_No', 'asc')
+                            ->pluck('MTC_RQ_No', 'MTC_RQ_No')
+                            ->toArray()
+                    )
+                    ->searchable(), */
 
                 SelectFilter::make('SO_Status')
                     ->label('SO Status')
@@ -586,6 +606,7 @@ class TransactionalDataResource extends Resource
                             ->pluck('SO_Status', 'SO_Status')
                             ->toArray()
                     )
+                    ->multiple()
                     ->searchable(),
 
             ])

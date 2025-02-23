@@ -17,4 +17,4 @@ implementasi  powergrid
 CLASS: app/Livewire/TransactionTable.php
 VIEW:  resources/views/livewire/transaction-table.blade.php
 
-belum jalan
+Export data belum di selesaikan
